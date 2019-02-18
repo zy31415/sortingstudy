@@ -1,0 +1,5 @@
+package sort
+
+class MergeSort {
+
+}
