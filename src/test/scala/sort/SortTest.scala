@@ -2,6 +2,8 @@ package sort
 
 import org.scalatest.FunSuite
 
+import scala.util.Random
+
 class SortTest extends FunSuite {
 
   def time[R](block: => R): R = {
@@ -12,7 +14,7 @@ class SortTest extends FunSuite {
     result
   }
 
-  def assertAscending(a: Array[Int]):Unit =
+  def assertSorted(a: Array[Int]):Unit =
     for (i <- 1 until a.length)
       assert(a(i) >= a(i-1))
 
@@ -22,7 +24,7 @@ class SortTest extends FunSuite {
     time {
       sorter.sort(arr)
     }
-    assertAscending(arr)
+    assertSorted(arr)
   }
 
   test("Test Bubble sort - descending") {
@@ -32,7 +34,7 @@ class SortTest extends FunSuite {
     time {
       sorter.sort(arr)
     }
-    assertAscending(arr)
+    assertSorted(arr)
   }
 
   test("MergeSort") {
@@ -42,6 +44,34 @@ class SortTest extends FunSuite {
     time {
       sorter.sort(arr)
     }
-    assertAscending(arr)
+    assertSorted(arr)
+  }
+
+  test("Heap sort - descending") {
+    val arr = (100000 to 1 by -1).toArray
+    val sorter = new HeapSort()
+
+    time {
+      sorter.sort(arr)
+    }
+    assertSorted(arr)
+  }
+
+  test("Heap sort - random") {
+    val r = new Random()
+    r.setSeed(10000L)
+    val arr = Seq.fill(1000)(r.nextInt(100000)).toArray
+
+    for (i <- arr) {
+      print(s"$i, ")
+    }
+    println()
+
+    val sorter = new HeapSort()
+
+    time {
+      sorter.sort(arr)
+    }
+    assertSorted(arr)
   }
 }
